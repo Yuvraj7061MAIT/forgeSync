@@ -24,3 +24,20 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@keyframes gradientPulse {
+  0%, 100% {
+    background-position: 30% 40%;
+    filter: brightness(1);
+  }
+  50% {
+    background-position: 32% 42%;
+    filter: brightness(1.3);
+  }
+}
+
+.animate-gradientPulse {
+  animation: gradientPulse 10s ease-in-out infinite;
+}
+
