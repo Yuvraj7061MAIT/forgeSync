@@ -1,5 +1,6 @@
+// app/api/webhooks/user/route.ts
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/db' // ✅ using your existing db.ts
+import { prisma } from '@/lib/db'
 
 export async function POST(req: Request) {
   try {
@@ -12,12 +13,11 @@ export async function POST(req: Request) {
       return new NextResponse('Email not found in webhook payload', { status: 400 })
     }
 
-    // Sync user in your database
     await prisma.user.upsert({
       where: { email },
-      update: {}, // no update for now
+      update: {},
       create: {
-        id, // Clerk ID as User.id (optional: could use cuid if you prefer)
+        id,
         email,
         name: [first_name, last_name].filter(Boolean).join(' '),
         image: image_url,
@@ -25,8 +25,8 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('[CLERK_WEBHOOK_ERROR]', error)
+  } catch (err) {
+    console.error('[CLERK_WEBHOOK_ERROR]', err)
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }
