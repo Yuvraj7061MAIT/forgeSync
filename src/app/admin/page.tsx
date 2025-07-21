@@ -1,9 +1,16 @@
-import React from 'react'
+import { auth } from '@clerk/nextjs/server'
+import { syncUserToDB } from '@/lib/syncUser'
 
-const page = () => {
+export default async function AdminPage() {
+  const { userId } = await auth()
+
+  // Create user in DB if not already saved
+  await syncUserToDB()
+
   return (
-    <div>page</div>
+    <div>
+      <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+      <p>Welcome, user ID: {userId}</p>
+    </div>
   )
 }
-
-export default page
