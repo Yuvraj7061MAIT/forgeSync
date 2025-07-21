@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import {
   SignedIn,
@@ -7,9 +8,21 @@ import {
   SignInButton,
   SignUpButton,
   UserButton,
+  useUser,
 } from '@clerk/nextjs'
 
 export default function Navbar() {
+  const { user } = useUser()
+
+  useEffect(() => {
+    const syncUserToDB = async () => {
+      if (user) {
+        await fetch('/api/create-user', { method: 'POST' })
+      }
+    }
+    syncUserToDB()
+  }, [user])
+
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-6xl">
       <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-xl px-6 py-3 shadow-xl flex justify-between items-center text-white">
