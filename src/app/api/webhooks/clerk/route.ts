@@ -1,12 +1,12 @@
+// src/app/api/webhooks/clerk/route.ts
 import { prisma } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const body = await req.json()
   const { id, email_addresses, image_url, first_name, last_name } = body.data
 
   const email = email_addresses?.[0]?.email_address
-
   if (!email) {
     return NextResponse.json({ error: 'Missing email' }, { status: 400 })
   }
